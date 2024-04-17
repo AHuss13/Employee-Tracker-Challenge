@@ -1,0 +1,17 @@
+{
+  "name": "challenge-12-(employee-tracker)",
+  "version": "1.0.0",
+  "description": "AS A business owner\r I WANT to be able to view and manage the departments, roles, and employees in my company\r SO THAT I can organize and plan my business",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "inquirer": "^8.2.4",
+    "mysql2": "^3.9.4",
+    "express": "^4.17.1"
+  }
+}
