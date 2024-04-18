@@ -1,25 +1,28 @@
 const inquirer = require("inquirer");
 
 function init() {
-  inquirer.prompt([
-    {
-      type: "list",
-      name: "start",
-      message: "What would you like to do?",
-      choice: [
-        "View All Departments",
-        "View All Roles",
-        "View All Employees",
-        "Add Department",
-        "Add Role",
-        "Add Employee",
-        "Update Employee Role",
-        "Quit", //,
-        // "Remove Department",
-        // "Remove Role",
-        // "Remove Employee"
-      ],
-    }.then((choice) => {
+  inquirer
+    .prompt([
+      {
+        type: "list",
+        name: "start",
+        message: "What would you like to do?",
+        choices: [
+          "View All Departments",
+          "View All Roles",
+          "View All Employees",
+          "Add Department",
+          "Add Role",
+          "Add Employee",
+          "Update Employee Role",
+          "Quit", //,
+          // "Remove Department",
+          // "Remove Role",
+          // "Remove Employee"
+        ],
+      },
+    ])
+    .then((choice) => {
       if (choice === "View All Departments") {
         viewAllDepts();
       }
@@ -44,19 +47,26 @@ function init() {
       if (choice === "Quit") {
         endCheck();
       }
-      // if (choice === "Remove Employee") {
-      //   ();
-      // }
-      // if (choice === "Remove Role") {
-      //   ();
-      // }
-      // if (choice === "Remove Department") {
-      //   ();
-      // }
-    }),
-  ]);
+    });
 }
 
 init();
 
-// const viewAllEmployees = ;
+function viewAllDepts() {
+  console.log("hello");
+}
+
+// function viewAllRoles() = ;
+// id, title, dept, salary
+
+// function viewAllEmployees() = ;
+
+// function addDept() = ;
+
+// function addRole() = ;
+
+// function addEmp() = ;
+
+// function updateEmpRole() = ;
+
+// function endCheck() = ;
