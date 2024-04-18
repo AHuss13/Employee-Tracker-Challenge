@@ -21,38 +21,38 @@ function init() {
       ],
     }.then((choice) => {
       if (choice === "View All Departments") {
-        ("");
+        viewAllDepts();
       }
       if (choice === "View All Roles") {
-        viewAllEmployees();
+        viewAllRoles();
       }
       if (choice === "View All Employees") {
-        ("");
+        viewAllEmps();
       }
       if (choice === "Add Department") {
-        ("");
+        addDept();
       }
       if (choice === "Add Role") {
         addRole();
       }
       if (choice === "Add Employee") {
-        ("");
-      }
-      if (choice === "Quit") {
-        ("");
+        addEmp();
       }
       if (choice === "Update Employee Role") {
-        ("");
+        updateEmpRole();
       }
-      if (choice === "Remove Employee") {
-        ("");
+      if (choice === "Quit") {
+        endCheck();
       }
-      if (choice === "Remove Role") {
-        ("");
-      }
-      if (choice === "Remove Department") {
-        ("");
-      }
+      // if (choice === "Remove Employee") {
+      //   ();
+      // }
+      // if (choice === "Remove Role") {
+      //   ();
+      // }
+      // if (choice === "Remove Department") {
+      //   ();
+      // }
     }),
   ]);
 }
