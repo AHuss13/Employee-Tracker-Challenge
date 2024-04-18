@@ -22,7 +22,9 @@ function init() {
         ],
       },
     ])
-    .then((choice) => {
+    .then((answer) => {
+      const choice = answer.start;
+
       if (choice === "View All Departments") {
         viewAllDepts();
       }
