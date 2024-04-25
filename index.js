@@ -124,7 +124,7 @@ VALUES (?)`;
           console.error("Error adding department:", err);
           return;
         }
-        console.log("New department added successfully!");
+        console.log(answer.newDept + " added successfully!");
         init();
       });
     })
