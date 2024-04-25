@@ -1,4 +1,17 @@
 const inquirer = require("inquirer");
+const mysql = require("mysql2");
+
+const db = mysql.createConnection(
+  {
+    host: "localhost",
+    // MySQL username,
+    user: "root",
+    // Add MySQL password here
+    password: "",
+    database: "employee_db",
+  },
+  console.log(`Connected to the movies_db database.`)
+);
 
 function init() {
   inquirer
@@ -55,15 +68,59 @@ function init() {
 init();
 
 function viewAllDepts() {
-  console.log("hello");
+  const sql = "SELECT * from department";
+
+  db.query(sql, (err, rows) => {
+    if (err) {
+      console.error("Error viewing departments:", err);
+      return;
+    }
+    console.table(rows);
+    init();
+  });
 }
 
-// function viewAllRoles() = ;
-// id, title, dept, salary
+function viewAllRoles() {
+  const sql = "SELECT * from role";
 
-// function viewAllEmployees() = ;
+  db.query(sql, (err, rows) => {
+    if (err) {
+      console.error("Error viewing roles:", err);
+      return;
+    }
+    console.table(rows);
+    init();
+  });
+}
 
-// function addDept() = ;
+// function viewAllEmployees() =
+
+function addDept() {
+  inquirer
+    .prompt([
+      {
+        type: "input",
+        name: "newDept",
+        message: "What is the name of the new department?",
+      },
+    ])
+    .then((answer) => {
+      const sql = `INSERT INTO department (dept_name)
+VALUES (?)`;
+
+      db.query(sql, answer.newDept, (err, res) => {
+        if (err) {
+          console.error("Error adding department:", err);
+          return;
+        }
+        console.log("New department added successfully!");
+        init();
+      });
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
+}
 
 // function addRole() = ;
 
