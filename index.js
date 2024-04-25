@@ -60,7 +60,7 @@ function init() {
         updateEmpRole();
       }
       if (choice === "Quit") {
-        endCheck();
+        db.end();
       }
     });
 }
@@ -138,5 +138,3 @@ VALUES (?)`;
 // function addEmp() = ;
 
 // function updateEmpRole() = ;
-
-// function endCheck() = ;
