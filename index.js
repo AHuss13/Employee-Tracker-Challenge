@@ -133,7 +133,53 @@ VALUES (?)`;
     });
 }
 
-// function addRole() = ;
+function addRole() {
+  const sql = "SELECT dept_name FROM department";
+  db.query(sql, (err, res) => {
+    if (err) {
+      console.error("Error retrieving departments:", err);
+      return;
+    }
+    const departmentsList = [];
+  });
+
+  inquirer
+    .prompt([
+      {
+        type: "input",
+        name: "title",
+        message: "What is the name of the new role?",
+      },
+      {
+        type: "input",
+        name: "salary",
+        message: "What is the salary for this role?",
+      },
+      {
+        type: "list",
+        name: "department",
+        message: "What department is this role in?",
+        choices: departmentsList
+      },
+    ])
+    .then((answer) => {
+      const newRole = [answer.title, answer.salary, answer.department];
+      const sql = `INSERT INTO role (title, salary, department_id)
+VALUES (?, ?, ?)`;
+
+      db.query(sql, newRole, (err, res) => {
+        if (err) {
+          console.error("Error adding role:", err);
+          return;
+        }
+        console.log(answer.title + " role added successfully!");
+        init();
+      });
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
+}
 
 // function addEmp() = ;
 
