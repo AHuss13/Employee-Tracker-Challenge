@@ -4,7 +4,7 @@ const mysql = require("mysql2");
 const db = mysql.createConnection(
   {
     host: "localhost",
-    // MySQL username,
+    // MySQL username
     user: "root",
     // Add MySQL password here
     password: "",
@@ -45,7 +45,7 @@ function init() {
         viewAllRoles();
       }
       if (choice === "View All Employees") {
-        viewAllEmps();
+        viewAllEmployees();
       }
       if (choice === "Add Department") {
         addDept();
@@ -93,7 +93,18 @@ function viewAllRoles() {
   });
 }
 
-// function viewAllEmployees() =
+function viewAllEmployees() {
+  const sql = "SELECT * from employee";
+
+  db.query(sql, (err, rows) => {
+    if (err) {
+      console.error("Error viewing employees:", err);
+      return;
+    }
+    console.table(rows);
+    init();
+  });
+}
 
 function addDept() {
   inquirer
