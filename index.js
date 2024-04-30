@@ -137,8 +137,6 @@ VALUES (?)`;
     });
 }
 
-
-
 async function addRole() {
   try {
     const [departmentsList] = await db.query("SELECT * FROM department");
@@ -146,7 +144,7 @@ async function addRole() {
       name: department.dept_name,
       value: department.id,
     }));
-    
+
     const answer = await inquirer.prompt([
       {
         type: "input",
@@ -165,10 +163,10 @@ async function addRole() {
         choices: departmentChoices,
       },
     ]);
-    
+
     const newRole = [answer.title, answer.salary, answer.department];
     const sql = `INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?)`;
-    
+
     await db.query(sql, newRole);
     console.log(answer.title + " role added successfully!");
     init();
@@ -225,7 +223,41 @@ async function addRole() {
 //     });
 // }
 
+// async function addEmp() {
+//   try {
+//     const [departmentsList] = await db.query("SELECT * FROM department");
+//     const departmentChoices = departmentsList.map((department) => ({
+//       name: department.dept_name,
+//       value: department.id,
+//     }));
 
-// function addEmp() = ;
+//     const answer = await inquirer.prompt([
+//       {
+//         type: "input",
+//         name: "title",
+//         message: "What is the name of the new role?",
+//       },
+//       {
+//         type: "input",
+//         name: "salary",
+//         message: "What is the salary for this role?",
+//       },
+//       {
+//         type: "list",
+//         name: "department",
+//         message: "What department is this role in?",
+//         choices: departmentChoices,
+//       },
+//     ]);
+
+//     const newRole = [answer.title, answer.salary, answer.department];
+//     const sql = `INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?)`;
+
+//     await db.query(sql, newRole);
+//     console.log(answer.title + " role added successfully!");
+//     init();
+//   } catch (error) {
+//     console.error("Error:", error);
+//   }
 
 // function updateEmpRole() = ;
