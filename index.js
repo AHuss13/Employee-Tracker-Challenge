@@ -1,21 +1,17 @@
 const inquirer = require("inquirer");
-const mysql = require("mysql2/promise");
+const mysql = require("mysql2");
 
-let db = {};
-
-mysql
-  .createConnection(
-    {
-      host: "localhost",
-      // MySQL username
-      user: "root",
-      // Add MySQL password here
-      password: "",
-      database: "employee_db",
-    },
-    console.log(`Connected to the movies_db database.`)
-  )
-  .then((val) => (db = val));
+let db = mysql.createConnection(
+  {
+    host: "localhost",
+    // MySQL username
+    user: "root",
+    // Add MySQL password here
+    password: "",
+    database: "employee_db",
+  },
+  console.log(`Connected to the movies_db database.`)
+);
 
 function init() {
   inquirer
@@ -137,7 +133,7 @@ VALUES (?)`;
     });
 }
 
-async function addRole() {
+async function addRole() { // Needs to be fixed. Doesn't work with original connection
   try {
     const [departmentsList] = await db.query("SELECT * FROM department");
     const departmentChoices = departmentsList.map((department) => ({
