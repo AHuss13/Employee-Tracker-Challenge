@@ -224,15 +224,17 @@ async function addRole() {
 // }
 
 async function addEmp() {
-  try { // Needs to be updated for role and manager
+  try {
+    // Needs to be updated for role and manager
     const [departmentsList] = await db.query("SELECT * FROM department");
     const departmentChoices = departmentsList.map((department) => ({
       name: department.dept_name,
-      value: department.id}));
+      value: department.id,
+    }));
     const [managersList] = await db.query("SELECT * FROM ");
     const managerChoices = managersListList.map((manager) => ({
-        name: department.dept_name,
-        value: department.id,
+      name: department.dept_name,
+      value: department.id,
     }));
 
     const answer = await inquirer.prompt([
@@ -256,11 +258,17 @@ async function addEmp() {
         type: "list",
         name: "manager",
         message: "Who is the employee's manager?",
-        choices: None, managerChoices,
+        choices: None,
+        managerChoices,
       },
     ]);
 
-    const newEmp = [answer.firstname, answer.lastname, answer.role, answer.manager];
+    const newEmp = [
+      answer.firstname,
+      answer.lastname,
+      answer.role,
+      answer.manager,
+    ];
     const sql = `INSERT INTO role (firstname, lastname, role, manager) VALUES (?, ?, ?, ?)`;
 
     await db.query(sql, newEmp);
