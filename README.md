@@ -2,18 +2,31 @@
 
 ## Description
 
-The purpose of this project was to continue practice with Node.js and Inquirer, as well as learn MySQL.
+This is a command-line application built with Node.js, Inquirer, and MySQL that allows business owners to view and manage departments, roles, and employees in their company. Users can:
+
+- View all departments, roles, and employees
+- Add departments, roles, and employees
+- Update employee roles
+- View employees by manager
+- View employees by department
 
 ## Installation
 
-Run npm or pnpm in termal to install requirements.
+1. Clone the repository
+2. Install the required dependencies by running `npm install`
+3. Create MySQL database using the schema.sql file
+4. (Optional) Seed the database using seeds.sql file
+5. Update database connection settings in index.js if needed
 
 ## Usage
 
-Run node.js in terminal and then select actions.
+1. Run `node index.js` to start the application
+2. Use arrow keys to navigate through menu options
+3. Follow prompts to view, add or update company data
+
+Watch the demo video below to see the application in action:
 
 ![Demo Video](/Demo/Demo%20Video.webm)
-
 
 ## License
 
