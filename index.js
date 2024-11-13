@@ -262,5 +262,59 @@ function addEmp() {
     });
   });
 }
+function updateEmpRole() {
+  db.query("SELECT * FROM employee", (err, employeeList) => {
+    if (err) {
+      console.error("Error getting employees:", err);
+      return;
+    }
 
-// function updateEmpRole() = ;
+    const employeeChoices = employeeList.map((employee) => ({
+      name: `${employee.first_name} ${employee.last_name}`,
+      value: employee.id,
+    }));
+
+    db.query("SELECT * FROM role", (err, roleList) => {
+      if (err) {
+        console.error("Error getting roles:", err);
+        return;
+      }
+
+      const roleChoices = roleList.map((role) => ({
+        name: role.title,
+        value: role.id,
+      }));
+
+      inquirer
+        .prompt([
+          {
+            type: "list",
+            name: "employee",
+            message: "Which employee's role do you want to update?",
+            choices: employeeChoices,
+          },
+          {
+            type: "list",
+            name: "role",
+            message:
+              "Which role do you want to assign to the selected employee?",
+            choices: roleChoices,
+          },
+        ])
+        .then((answer) => {
+          const sql = `UPDATE employee SET role_id = ? WHERE id = ?`;
+          db.query(sql, [answer.role, answer.employee], (err, result) => {
+            if (err) {
+              console.error("Error updating employee role:", err);
+              return;
+            }
+            console.log("Employee role updated successfully!");
+            init();
+          });
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    });
+  });
+}
