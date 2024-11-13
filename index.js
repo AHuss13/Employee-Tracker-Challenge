@@ -133,146 +133,134 @@ VALUES (?)`;
     });
 }
 
-async function addRole() { // Needs to be fixed. Doesn't work with original connection
-  try {
-    const [departmentsList] = await db.query("SELECT * FROM department");
+function addRole() {
+  db.query("SELECT * FROM department", (err, departmentsList) => {
+    if (err) {
+      console.error("Error getting departments:", err);
+      return;
+    }
+
     const departmentChoices = departmentsList.map((department) => ({
       name: department.dept_name,
       value: department.id,
     }));
 
-    const answer = await inquirer.prompt([
-      {
-        type: "input",
-        name: "title",
-        message: "What is the name of the new role?",
-      },
-      {
-        type: "input",
-        name: "salary",
-        message: "What is the salary for this role?",
-      },
-      {
-        type: "list",
-        name: "department",
-        message: "What department is this role in?",
-        choices: departmentChoices,
-      },
-    ]);
+    inquirer
+      .prompt([
+        {
+          type: "input",
+          name: "title",
+          message: "What is the name of the new role?",
+        },
+        {
+          type: "input",
+          name: "salary",
+          message: "What is the salary for this role?",
+        },
+        {
+          type: "list",
+          name: "department",
+          message: "What department is this role in?",
+          choices: departmentChoices,
+        },
+      ])
+      .then((answer) => {
+        const newRole = [answer.title, answer.salary, answer.department];
+        const sql = `INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?)`;
 
-    const newRole = [answer.title, answer.salary, answer.department];
-    const sql = `INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?)`;
-
-    await db.query(sql, newRole);
-    console.log(answer.title + " role added successfully!");
-    init();
-  } catch (error) {
-    console.error("Error:", error);
-  }
+        db.query(sql, newRole, (err, result) => {
+          if (err) {
+            console.error("Error adding role:", err);
+            return;
+          }
+          console.log(answer.title + " role added successfully!");
+          init();
+        });
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  });
 }
 
-// ------ Keeping to work out other issue later ------
-
-// async function addRole() {
-//   const sql = "SELECT * FROM department";
-//   const [departmentsList] = await db.query(sql);
-//   const departmentChoices = departmentsList.map((department) => ({
-//     name: department.dept_name,
-//     value: department.id,
-//   }));
-
-//   inquirer
-//     .prompt([
-//       {
-//         type: "input",
-//         name: "title",
-//         message: "What is the name of the new role?",
-//       },
-//       {
-//         type: "input",
-//         name: "salary",
-//         message: "What is the salary for this role?",
-//       },
-//       {
-//         type: "list",
-//         name: "department",
-//         message: "What department is this role in?",
-//         choices: departmentChoices,
-//       },
-//     ])
-//     .then((answer) => {
-//       const newRole = [answer.title, answer.salary, answer.department];
-//       const sql = `INSERT INTO role (title, salary, department_id)
-// VALUES (?, ?, ?)`;
-
-//       db.query(sql, newRole, (err, res) => {
-//         if (err) {
-//           console.error("Error adding role:", err);
-//           return;
-//         }
-//         console.log(answer.title + " role added successfully!");
-//         init();
-//       });
-//     })
-//     .catch((error) => {
-//       console.error("Error:", error);
-//     });
-// }
-
-async function addEmp() {
-  try {
-    // Needs to be updated for role and manager
-    const [departmentsList] = await db.query("SELECT * FROM department");
-    const departmentChoices = departmentsList.map((department) => ({
-      name: department.dept_name,
-      value: department.id,
-    }));
-    const [managersList] = await db.query("SELECT * FROM ");
-    const managerChoices = managersListList.map((manager) => ({
-      name: department.dept_name,
-      value: department.id,
+function addEmp() {
+  db.query("SELECT * FROM role", (err, rolesList) => {
+    if (err) {
+      console.error("Error getting roles:", err);
+      return;
+    }
+    const roleChoices = rolesList.map((role) => ({
+      name: role.title,
+      value: role.id,
     }));
 
-    const answer = await inquirer.prompt([
-      {
-        type: "input",
-        name: "firstname",
-        message: "What is the employee's first name?",
-      },
-      {
-        type: "input",
-        name: "lastname",
-        message: "What is the employee's last name?",
-      },
-      {
-        type: "list",
-        name: "role",
-        message: "What is the employee's role?",
-        choices: roleChoices,
-      },
-      {
-        type: "list",
-        name: "manager",
-        message: "Who is the employee's manager?",
-        choices: None,
-        managerChoices,
-      },
-    ]);
+    db.query("SELECT * FROM employee", (err, managersList) => {
+      if (err) {
+        console.error("Error getting managers:", err);
+        return;
+      }
+      const managerChoices = [
+        { name: "None", value: null },
+        ...managersList.map((manager) => ({
+          name: `${manager.first_name} ${manager.last_name}`,
+          value: manager.id,
+        })),
+      ];
 
-    const newEmp = [
-      answer.firstname,
-      answer.lastname,
-      answer.role,
-      answer.manager,
-    ];
-    const sql = `INSERT INTO role (firstname, lastname, role, manager) VALUES (?, ?, ?, ?)`;
+      inquirer
+        .prompt([
+          {
+            type: "input",
+            name: "first_name",
+            message: "What is the employee's first name?",
+            validate: (input) =>
+              input.trim() !== "" || "First name is required",
+          },
+          {
+            type: "input",
+            name: "last_name",
+            message: "What is the employee's last name?",
+            validate: (input) => input.trim() !== "" || "Last name is required",
+          },
+          {
+            type: "list",
+            name: "role",
+            message: "What is the employee's role?",
+            choices: roleChoices,
+          },
+          {
+            type: "list",
+            name: "manager",
+            message: "Who is the employee's manager?",
+            choices: managerChoices,
+          },
+        ])
+        .then((answer) => {
+          const newEmp = [
+            answer.first_name.trim(),
+            answer.last_name.trim(),
+            answer.role,
+            answer.manager,
+          ];
 
-    await db.query(sql, newEmp);
-    console.log(answer.title + " employee added successfully!");
-    init();
-  } catch (error) {
-    console.error("Error:", error);
-  }
+          const sql = `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)`;
+
+          db.query(sql, newEmp, (err, result) => {
+            if (err) {
+              console.error("Error adding employee:", err);
+              return;
+            }
+            console.log(
+              `Employee ${answer.first_name} ${answer.last_name} added successfully!`
+            );
+            init();
+          });
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    });
+  });
 }
 
 // function updateEmpRole() = ;
