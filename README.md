@@ -26,6 +26,7 @@ This is a command-line application built with Node.js, Inquirer, and MySQL that 
 
 Watch the demo video below to see the application in action:
 
+<!-- Need to rerecord the video -->
 ![Demo Video](/Demo/Demo%20Video.webm)
 
 ## License
